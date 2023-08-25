@@ -1,5 +1,5 @@
-﻿using BookHouseWeb.Data;
-using BookHouseWeb.Models;
+﻿using BookHouse.Models;
+using BookHouseWeb.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookHouseWeb.Controllers

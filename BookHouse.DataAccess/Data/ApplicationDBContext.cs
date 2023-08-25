@@ -1,4 +1,4 @@
-﻿using BookHouseWeb.Models;
+﻿using BookHouse.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookHouseWeb.Data
