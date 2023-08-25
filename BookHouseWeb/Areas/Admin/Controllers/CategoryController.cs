@@ -4,8 +4,9 @@ using BookHouse.Models;
 using BookHouseWeb.Data;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookHouseWeb.Controllers
+namespace BookHouseWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
