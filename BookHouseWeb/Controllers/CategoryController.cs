@@ -1,4 +1,6 @@
-﻿using BookHouse.Models;
+﻿using BookHouse.DataAccess.Repository;
+using BookHouse.DataAccess.Repository.IRepository;
+using BookHouse.Models;
 using BookHouseWeb.Data;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,14 +8,14 @@ namespace BookHouseWeb.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDBContext _db;
-        public CategoryController(ApplicationDBContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            IEnumerable<Category> categories = _db.Categories;
+            IEnumerable<Category> categories = _unitOfWork.Category.GetAll();
             return View(categories);
         }
 
@@ -28,8 +30,8 @@ namespace BookHouseWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(category);
-                _db.SaveChanges();
+                _unitOfWork.Category.Add(category);
+                _unitOfWork.Save();
                 TempData["success"] = "Category Created Successfully";
                 return RedirectToAction(nameof(Index));
             }
@@ -43,7 +45,7 @@ namespace BookHouseWeb.Controllers
             {
                 return NotFound();
             }
-            var category = _db.Categories.FirstOrDefault(c => c.Id == id);
+            var category = _unitOfWork.Category.GetFirstOrDefault(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -58,8 +60,8 @@ namespace BookHouseWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(category);
-                _db.SaveChanges();
+                _unitOfWork.Category.Update(category);
+                _unitOfWork.Save();
                 TempData["success"] = "Category Updated Successfully";
                 return RedirectToAction(nameof(Index));
             }
@@ -74,7 +76,7 @@ namespace BookHouseWeb.Controllers
             {
                 return NotFound();
             }
-            var category = _db.Categories.FirstOrDefault(c => c.Id == id);
+            var category = _unitOfWork.Category.GetFirstOrDefault(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -89,8 +91,8 @@ namespace BookHouseWeb.Controllers
         {
             if (!ModelState.IsValid)
             {
-                _db.Categories.Remove(category);
-                _db.SaveChanges();
+                _unitOfWork.Category.Remove(category);
+                _unitOfWork.Save();
                 TempData["success"] = "Category Delete Successfully";
                 return RedirectToAction("Index");
             }
